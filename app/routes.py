@@ -72,12 +72,13 @@ def new_card():
         category = request.form["category"]      
         topic = request.form["topic"]
         question = request.form["question"]
+        answer = request.form["answer"]
 
         if category == 'code':
             #using pygments to store code as html elements for highlighting.
             question = highlight(question, PythonLexer(), HtmlFormatter())
 
-        card = Card(category, topic, question, author=u)
+        card = Card(category, topic, question,answer, author=u)
         db.session.add(card)
         db.session.commit()
 
@@ -130,6 +131,7 @@ def edit(card_id):
         # Only show cards respective to user.
     card = Card.query.get(card_id)
     card.question = request.form["question"]
+    card.answer = request.form["answer"]
     card.topic = request.form["topic"]
     
     db.session.commit()

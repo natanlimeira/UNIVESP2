@@ -25,13 +25,15 @@ class Card(db.Model):
    category = db.Column(db.String(100))
    topic = db.Column(db.String(100))
    question = db.Column(db.String(100000))
+   answer = db.Column(db.String(100000))
    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
    
-   def __init__(self, category, topic, question, author):
+   def __init__(self, category, topic, question,answer, author):
        self.category = category
        self.topic = topic
        self.question = question
+       self.answer = answer
        self.author = author
 
 @login.user_loader

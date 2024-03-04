@@ -1,16 +1,23 @@
 {% extends "base.html" %}
     {% block content %}
     <div class="ui main container">
+        <h1>Adicione uma nova carta!!</h1>
         <form action="/cards/new" method="POST" class="ui form">
             <div class="field">
                 <label for="topic">Topic</label>
                 <input type="text" name="topic"> 
             </div>
             <div class="field">
-                <label for="question">Question/Code</label>
+                <label for="question">Question</label>
                 <!-- <input type="text" name="question">
                  -->
-                <textarea name="question" id="" cols="30" rows="20"></textarea>
+                <textarea name="question" id="" cols="10" rows="10"></textarea>
+            </div>
+            <div class="field">
+                <label for="answer">Answer</label>
+                <!-- <input type="text" name="question">
+                 -->
+                 <textarea name="answer" id="" cols="10" rows="10"></textarea>
             </div>
             <div class="inline fields">
                 <div class="field">
@@ -27,6 +34,7 @@
                 </div>
             </div>
             <button type="submit" class="ui circular teal button">Submit!</button>
+            <button type="button" id="cancel-button" href="/" class="ui circular gray button">Cancelar</button>
         </form>
     </div>
     {% endblock %}
