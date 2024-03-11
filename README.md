@@ -17,7 +17,7 @@ online flash cards for studying.
 * Querying based on topics.
 
 ## Usage:
-* `git clone https://github.com/RafaelBroseghini/Flask-Cards.git`
+* `git clone https://github.com/natanlimeira/UNIVESP2.git`
 * `cd Flask-Cards`
 * `pip install -r requirements.txt`
 * `flask db init`
