@@ -18,7 +18,7 @@ online flash cards for studying.
 
 ## Usage:
 * `git clone https://github.com/natanlimeira/UNIVESP2.git`
-* `cd Flask-Cards`
+* `cd UNIVESP2`
 * `pip install -r requirements.txt`
 * `flask db init`
 * `flask db migrate -m "users table"`

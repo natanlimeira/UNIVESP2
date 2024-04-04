@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, RadioField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User
 
@@ -16,12 +16,18 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    admin = RadioField("Perfil", choices=[('1','Aluno'),('2','Professor')])
     submit = SubmitField('Register')
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError('Looks like that username is already being used.')
+            raise ValidationError('O nome já está em uso!')
+        
+    def validate_admin(self, admin):
+        user = User.query.filter_by(admin=admin.data).first()
+        if user is not None:
+            raise ValidationError('Já há um administrador do sistema')
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
