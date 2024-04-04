@@ -19,7 +19,6 @@
             </a>
             {% if current_user.is_anonymous %}
             <a class="right item" href="/login">Login</a>
-            <a class="right item" href="/admin">Admin</a>
             {% else %}
             <a class="right item" href="/logout">Logout</a>
             {% endif %}
@@ -30,7 +29,7 @@
         <div class="results"></div>
     </div> -->
     {% block content%}
-    <h1>Welcome to Flask Cards!</h1>
+    <h1>Bem vindo ao sistema de Flash Cards!</h1>
     {% endblock %}
     <script
     src="https://code.jquery.com/jquery-3.3.1.min.js"

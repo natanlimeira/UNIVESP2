@@ -7,8 +7,12 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
+    phone = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     admin = db.Column(db.Integer)
+    id_level = db.Column(db.Integer, db.ForeignKey('level.id_level')) #id_nivel
+    id_book = db.Column(db.Integer, db.ForeignKey('book.id_book')) #id_livro
+
     posts = db.relationship('Card', backref='author', lazy='dynamic')
 
     def __init__(self, username, email, admin):
@@ -21,15 +25,32 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    def get_admin(self):
+        return self.admin
+    
+    def get_level(self):
+        return self.id_level
+    
+    def set_level(self, level):
+        self.id_level = level
+
+    def get_book(self):
+        return self.id_book
+    
+    def set_book(self, book):
+        self.id_book = book
 
 class Card(db.Model):
-   id = db.Column(db.Integer, primary_key = True)
+   id = db.Column(db.Integer, primary_key = True) #id_vocabuloi
    category = db.Column(db.String(100))
-   topic = db.Column(db.String(100))
-   question = db.Column(db.String(100000))
-   answer = db.Column(db.String(100000))
+   topic = db.Column(db.String(100)) #genero
+   question = db.Column(db.String(100000)) #voc_descricao
    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-   user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+   plural = db.Column(db.String(100000)) #plural
+   answer = db.Column(db.String(100000)) #traducao
+   user_id = db.Column(db.Integer, db.ForeignKey('user.id')) #id_aluno
+   chapter = db.Column(db.Integer, db.ForeignKey('book.chapter')) #capitulo
    
    def __init__(self, category, topic, question,answer, author):
        self.category = category
@@ -37,6 +58,24 @@ class Card(db.Model):
        self.question = question
        self.answer = answer
        self.author = author
+
+class Book(db.Model):
+   id_book = db.Column(db.Integer, primary_key = True) #id_livro
+   head = db.Column(db.String(1000)) #Título
+   chapter = db.Column(db.Integer()) #capítulo
+   id_level = db.Column(db.Integer, db.ForeignKey('level.id_level')) #id_nivel
+
+   def __init__(self, head, chapter):
+       self.head = head
+       self.chapter = chapter
+
+class Level(db.Model):
+   id_level = db.Column(db.Integer, primary_key = True) #id_nivel
+   description = db.Column(db.Integer()) #Descrição
+
+   def __init__(self, description):
+       self.description = description
+
 
 @login.user_loader
 def load_user(id):

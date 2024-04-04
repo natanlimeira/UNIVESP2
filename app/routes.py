@@ -31,10 +31,14 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Nome ou senha incorreta')
             return redirect("/login")
+        admin = user.get_admin()
         login_user(user, remember=form.remember_me.data)
-        return redirect("/")
+        if admin == 2:
+            return redirect("/admin")
+        else:
+            return redirect("/")
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout')
@@ -60,6 +64,26 @@ def index():
         all_topics = 0
 
     return render_template("index.html", card=random_card, total_cards=total_cards, all_topics_len=all_topics_len, all_topics=all_topics)
+
+@app.route("/admin")
+@login_required
+def admin():
+    try:
+        u = User.query.get(current_user.id)
+        cards = u.posts.all()
+        topics = set(list(t.topic for t in cards))
+        random_card = random.choice(cards)
+        total_cards = len(cards)
+        all_topics_len = len(topics)
+        all_topics = sorted(topics)
+    except:
+        random_card = None
+        total_cards = 0
+        all_topics_len = 0
+        all_topics = 0
+
+    return render_template("admin.html", card=random_card, total_cards=total_cards, all_topics_len=all_topics_len, all_topics=all_topics)
+
 
 @app.route("/cards/new", methods=["GET", "POST"])
 def new_card():
