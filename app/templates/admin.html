@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+    {% block content %}    
+    <div class="ui main container">
+        <div class="ui stackable grid">
+            <div class="row">
+                <div class="sixteen column wide center aligned">
+                    <div class="ui two statistics">
+                        <div class="statistic animated zoomIn">
+                            <div class="value">
+                            {{ all_books_len }}
+                            </div>
+                            <div class="label">
+                                Livros
+                            </div>
+                        </div>  
+                        <div class="statistic animated zoomIn">
+                            <div class="value">
+                                {{ total_cards }}
+                            </div>
+                            <div class="label">
+                            Cartas
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="eight wide column">
+                    <div class="ui tall stacked segment">
+                        <a class="ui black ribbon label">Livros</a>
+                        <div class="ui green right corner label"
+                        data-content="Adicionar novo livro!"
+                        data-position="right center">
+                            <a href="/book/new"><i class="add icon" style="cursor: pointer;"></i></a> 
+                        </div>
+                        <h1 class="ui header ellipsis topic">Adicione um livro => </h1>
+                    </div>
+                </div>
+                <div class="eight wide column">
+                    <div class="ui tall stacked segment">
+                        <a class="ui green ribbon label">Cartas</a>
+                        <div class="ui green right corner label"
+                        data-content="Adicione uma nova carta"
+                        data-position="right center">
+                            <a href="/cards/new"><i class="add icon" style="cursor: pointer;"></i></a> 
+                        </div>
+                        <h1 class="ui header ellipsis question">Adicione uma carta => </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% if card%}
+                <div class="sixteen wide column">
+                    <a class="ui left floated big green button" href="/cards/{{ card.id }}">Edit!</a>
+                    <!-- <div class="ui right floated massive teal buttons">
+                        <div class="ui button">View!</div>
+                        <div class="ui floating dropdown icon button">
+                            <i class="dropdown icon"></i>
+                            <div class="ui big menu">
+                            <a href="/cards/general" class="item"><i class="edit icon"></i> General</a>
+                            <a href="/cards/code" class="item"><i class="code icon"></i> Code</a>
+                            <a href="/cards" class="item"><i class="globe icon"></i> All</a>
+                            </div>
+                        </div> -->
+                        <div class="ui labeled icon top right pointing dropdown right floated big teal button">
+                            <i class="filter icon"></i>
+                            <span class="text">Filter Cards</span>
+                            <div class="scrollable menu">
+                              <div class="ui search icon input">
+                                <i class="search icon"></i>
+                                <input type="text" name="search" placeholder="Search cards...">
+                              </div>
+                              <div class="divider"></div>
+                              <div class="header">
+                                <i class="tags icon"></i>
+                                Filter by category
+                              </div>
+                              <a class="item" href="/cards/category/general">
+                                <div class="ui blue empty circular label"></div>
+                                General
+                              </a>
+                              <a class="item" href="/cards/category/code">
+                                <div class="ui yellow empty circular label"></div>
+                                Code
+                              </a>
+                              <a class="item" href="/cards">
+                                <div class="ui green empty circular label"></div>
+                                All
+                              </a>
+                              <div class="divider"></div>
+                              <div class="header">
+                                <i class="code icon"></i>
+                                Filter by topic
+                              </div>
+                              {% set seq = ['blue', 'red', 'green', 'yellow', 'black', 'olive', 'violet', 'orange', 'purple', 'pink', 'brown'] %} 
+                              {% for card in all_topics%}
+                              <a class="item" href="/cards/topic/{{ card }}">
+                                <i class="{{ seq | random }} circle icon"></i>
+                                {{ card }}
+                              </a>
+                              {% endfor %}
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div> 
+    {% endblock %}

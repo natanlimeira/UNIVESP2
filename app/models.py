@@ -14,6 +14,7 @@ class User(UserMixin, db.Model):
     id_book = db.Column(db.Integer, db.ForeignKey('book.id_book')) #id_livro
 
     posts = db.relationship('Card', backref='author', lazy='dynamic')
+    posts_book = db.relationship('Book', backref='booker')
 
     def __init__(self, username, email, admin):
        self.username = username
@@ -52,12 +53,11 @@ class Card(db.Model):
    user_id = db.Column(db.Integer, db.ForeignKey('user.id')) #id_aluno
    chapter = db.Column(db.Integer, db.ForeignKey('book.chapter')) #capitulo
    
-   def __init__(self, category, topic, question,answer, author):
-       self.category = category
+   def __init__(self, topic, question, plural, answer):
        self.topic = topic
        self.question = question
        self.answer = answer
-       self.author = author
+       self.plural = plural
 
 class Book(db.Model):
    id_book = db.Column(db.Integer, primary_key = True) #id_livro
@@ -65,9 +65,11 @@ class Book(db.Model):
    chapter = db.Column(db.Integer()) #capítulo
    id_level = db.Column(db.Integer, db.ForeignKey('level.id_level')) #id_nivel
 
-   def __init__(self, head, chapter):
+   def __init__(self, id_book, head, chapter, id_level):
+       self.id_book = id_book
        self.head = head
        self.chapter = chapter
+       self.id_level = id_level
 
 class Level(db.Model):
    id_level = db.Column(db.Integer, primary_key = True) #id_nivel

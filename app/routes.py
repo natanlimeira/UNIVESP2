@@ -6,7 +6,7 @@ from pygments import highlight
 from pygments.lexers import PythonLexer
 from pygments.formatters import HtmlFormatter
 from app import app, db
-from app.models import Card, User
+from app.models import Card, User, Book, Level
 from app.forms import LoginForm, RegistrationForm
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -31,7 +31,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Nome ou senha incorreta')
+            flash('Nome ou senha incorreta','Erro de login')
             return redirect("/login")
         admin = user.get_admin()
         login_user(user, remember=form.remember_me.data)
@@ -52,18 +52,18 @@ def index():
     try:
         u = User.query.get(current_user.id)
         cards = u.posts.all()
-        topics = set(list(t.topic for t in cards))
+        books = set(list(t.topic for t in cards))
         random_card = random.choice(cards)
         total_cards = len(cards)
-        all_topics_len = len(topics)
-        all_topics = sorted(topics)
+        all_books_len = len(books)
+        all_books = sorted(books)
     except:
         random_card = None
         total_cards = 0
-        all_topics_len = 0
-        all_topics = 0
+        all_books_len = 0
+        all_books = 0
 
-    return render_template("index.html", card=random_card, total_cards=total_cards, all_topics_len=all_topics_len, all_topics=all_topics)
+    return render_template("index.html", card=random_card, total_cards=total_cards, all_books_len=all_books_len, all_books=all_books)
 
 @app.route("/admin")
 @login_required
@@ -71,18 +71,18 @@ def admin():
     try:
         u = User.query.get(current_user.id)
         cards = u.posts.all()
-        topics = set(list(t.topic for t in cards))
+        books = Book.query.all()
         random_card = random.choice(cards)
         total_cards = len(cards)
-        all_topics_len = len(topics)
-        all_topics = sorted(topics)
+        all_books_len = len(books)
+        all_books = sorted(books)
     except:
         random_card = None
         total_cards = 0
-        all_topics_len = 0
-        all_topics = 0
+        all_books_len = 0
+        all_books = 0
 
-    return render_template("admin.html", card=random_card, total_cards=total_cards, all_topics_len=all_topics_len, all_topics=all_topics)
+    return render_template("admin.html", card=random_card, total_cards=total_cards, all_books_len=all_books_len, all_books=all_books)
 
 
 @app.route("/cards/new", methods=["GET", "POST"])
@@ -90,23 +90,41 @@ def new_card():
     u = User.query.get(current_user.id)
 
     if request.method == "GET":
-        all_topics = sorted(set([t.topic for t in u.posts.all()]))
-        return render_template("new.html", all_topics=all_topics)
+        all_cards = Card.query.all()
+        return render_template("new.html", all_cards=all_cards)
     else:
         category = request.form["category"]      
         topic = request.form["topic"]
         question = request.form["question"]
+        plural = request.form["plural"]
         answer = request.form["answer"]
 
-        if category == 'code':
-            #using pygments to store code as html elements for highlighting.
-            question = highlight(question, PythonLexer(), HtmlFormatter())
+        # if category == 'code':
+        #     #using pygments to store code as html elements for highlighting.
+        #     question = highlight(question, PythonLexer(), HtmlFormatter())
 
-        card = Card(category, topic, question,answer, author=u)
+        card = Card(topic, question, plural, answer)
         db.session.add(card)
         db.session.commit()
 
-        return redirect("/")
+        return redirect("/admin")
+
+@app.route("/book/new", methods=["GET", "POST"])
+def new_book():
+    if request.method == "GET":
+        all_books = Book.query.all()
+        return render_template("new_book.html", all_books=all_books)
+    else:
+        id_book = request.form["id_book"]      
+        head = request.form["head"]
+        chapter = request.form["chapter"]
+        id_level = request.form["id_level"]
+
+        book = Book(id_book, head, chapter,id_level)
+        db.session.add(book)
+        db.session.commit()
+
+        return redirect("/admin")
 
 # All cards
 @app.route("/cards")

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+    {% block content %}
+    <div class="ui main container">
+        <h1>Adicione um novo livro!!</h1>
+        <form action="/book/new" method="POST" class="ui form">
+            <div class="field">
+                <label for="id_book">Número</label>
+                <input type="text" name="id_book"> 
+            </div>
+            <div class="field">
+                <label for="head">Título</label>
+                <textarea name="head" id="" cols="5" rows="1"></textarea>
+            </div>
+            <div class="field">
+                <label for="chapter">Capítulo</label>
+                 <textarea name="chapter" id="" cols="5" rows="1"></textarea>
+            </div>
+            <div class="field">
+                <label for="id_level">Nível</label>
+                 <textarea name="id_level" id="" cols="2" rows="1"></textarea>
+            </div>
+            <button type="submit" class="ui circular teal button">Enviar!</button>
+            <button type="button" id="cancel-button" href="/admin" class="ui circular gray button">Cancelar</button>
+        </form>
+    </div>
+    {% endblock %}

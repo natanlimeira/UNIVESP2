@@ -6,6 +6,14 @@
         <h1 class="ui center aligned header">Sign In</h1>
         <form class="ui form" action="" method="post" novalidate>
             {{ form.hidden_tag() }}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ messages[-1] }}
+                        </div>
+                {% endif %}
+            {% endwith %}
+
             <div class="ui field">
                 <label for="">{{ form.username.label }}</label>
                 {{ form.username(size=32) }}
