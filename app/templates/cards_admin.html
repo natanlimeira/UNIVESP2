@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block head %}
+    {{super()}}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/codestyles.css') }}">
+{% endblock %}
+{% block content %}
+    <div class="ui segment">
+        <div class="ui stackable grid">
+            <div class="sixteen wide column">
+                <a class="ui left floated green button" href="/admin">← Voltar</a>
+            </div>
+            {% for card in cards %}
+            <div class="four wide column" >
+            <div class="ui fluid card">
+                    <div class="content">
+                        <div class="topic ellipsis header">
+                           Questão: {{card.question}}
+                        </div>
+                        <div class="question ellipsis meta">
+                           Tópico: {{card.topic}}
+                        </div>
+                        <div class="question ellipsis meta">
+                            Plural: {{card.plural}}
+                         </div>
+                        <div class="question ellipsis meta">
+                            Resposta: {{card.answer}}
+                         </div>
+                        <div class="description">
+                        </div>
+                    </div>
+                    <div class="extra content" onmouseover="showDescription(this)" onmouseout="showDescription(this)">
+                        <div class="sixteen wide column">
+                            <div class="ui left floated yellow button toggle" onclick="showModal(this)">Ver a carta!</div>
+                            <a class="ui right floated green button toggle" href="/cards_admin/{{ card.id }}">Editar a carta!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="ui long modal">
+        <i class="close icon"></i>
+        <div class="modaltitle header">
+            Teste
+        </div>
+        <div class="modalcontent content"> 
+            <!-- Question/Code goes here! -->
+        </div>
+        <div class="actions">
+            <div class="ui red deny button">
+            Revisar!
+            </div>
+            <div class="ui positive right labeled icon button">
+            Já sei!
+            <i class="checkmark icon"></i>
+            </div>
+        </div>
+    </div>
+{% endblock %}

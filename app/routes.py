@@ -68,21 +68,20 @@ def index():
 @app.route("/admin")
 @login_required
 def admin():
-    try:
-        u = User.query.get(current_user.id)
-        cards = u.posts.all()
-        books = Book.query.all()
-        random_card = random.choice(cards)
-        total_cards = len(cards)
-        all_books_len = len(books)
-        all_books = sorted(books)
-    except:
-        random_card = None
-        total_cards = 0
-        all_books_len = 0
-        all_books = 0
+    # try:
+    cards = Card.query.all()
+    books = Book.query.all()
+    random_card = random.choice(cards)
+    total_cards = len(cards)
+    all_books_len = len(books)
+    # all_books = sorted(books)
+    # except:
+    #     random_card = None
+    #     total_cards = 0
+    #     all_books_len = 0
+    #     all_books = 0
 
-    return render_template("admin.html", card=random_card, total_cards=total_cards, all_books_len=all_books_len, all_books=all_books)
+    return render_template("admin.html", card=random_card, total_cards=total_cards, all_books_len=all_books_len)#, all_books=all_books)
 
 
 @app.route("/cards/new", methods=["GET", "POST"])
@@ -91,9 +90,8 @@ def new_card():
 
     if request.method == "GET":
         all_cards = Card.query.all()
-        return render_template("new.html", all_cards=all_cards)
+        return render_template("new_card.html", all_cards=all_cards)
     else:
-        category = request.form["category"]      
         topic = request.form["topic"]
         question = request.form["question"]
         plural = request.form["plural"]
@@ -115,12 +113,12 @@ def new_book():
         all_books = Book.query.all()
         return render_template("new_book.html", all_books=all_books)
     else:
-        id_book = request.form["id_book"]      
+        # id_book = request.form["id_book"]      
         head = request.form["head"]
         chapter = request.form["chapter"]
         id_level = request.form["id_level"]
 
-        book = Book(id_book, head, chapter,id_level)
+        book = Book(head, chapter,id_level)
         db.session.add(book)
         db.session.commit()
 
@@ -132,6 +130,13 @@ def show_cards():
     u = User.query.get(current_user.id)
     cards = sorted(u.posts.all(), key=lambda card:card.topic)
     return render_template("cards.html", cards=cards)
+
+# All cards
+@app.route("/cards_admin")
+def show_cards_admin():
+    all_cards = Card.query.all()
+    cards = sorted(all_cards, key=lambda card:card.topic)
+    return render_template("cards_admin.html", cards=cards)
 
 # ---------------------------------------------------------------
 '''
@@ -166,6 +171,13 @@ def get_card(card_id):
     card = [c for c in u.posts.all() if c.id == card_id]
     return render_template("show.html", card=card[0])
 
+@app.route("/cards_admin/<int:card_id>")
+def get_card_admin(card_id):
+    all_cards = Card.query.all()
+    cards = sorted(all_cards, key=lambda card:card.topic)
+    card = [c for c in cards if c.id == card_id]
+    return render_template("show_admin.html", card=card[0])
+
 # Update card.
 @app.route("/cards/<int:card_id>", methods=["POST"])
 def edit(card_id):
@@ -175,9 +187,10 @@ def edit(card_id):
     card.question = request.form["question"]
     card.answer = request.form["answer"]
     card.topic = request.form["topic"]
+    card.plural = request.form["plural"]
     
     db.session.commit()
-    return redirect("/")
+    return redirect("/cards_admin")
 
 @app.route("/cards/<int:card_id>/delete", methods=["POST"])
 def delete_card(card_id):
@@ -185,4 +198,4 @@ def delete_card(card_id):
         # Only show cards respective to user.
     Card.query.filter_by(id=card_id).delete()
     db.session.commit()
-    return redirect("/")
+    return redirect("/cards_admin")

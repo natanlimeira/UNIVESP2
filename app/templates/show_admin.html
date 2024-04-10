@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+    {% block content %}
+
+    <div class="ui segment">
+        <div class="row">
+            <div class="eight wide column">
+                <form action="/cards/{{card.id}}" method="POST" class="ui form">
+                    <div class="field">
+                        <label for="topic">Gênero</label>
+                        <input type="text" name="topic" value="{{ card.topic }}"> 
+                    </div>
+                    <div class="field">
+                        <label for="question">Questão</label>
+                        <textarea name="question" id="" cols="1" rows="1">{{ card.question }}</textarea>
+                    </div>
+                    <div class="field">
+                        <label for="plural">Plural</label>
+                        <textarea name="plural" id="" cols="30" rows="1">{{ card.plural }}</textarea>
+                    </div>
+                    <div class="field">
+                        <label for="answer">Resposta</label>
+                        <textarea name="answer" id="" cols="30" rows="1">{{ card.answer }}</textarea>
+                    </div>
+                    <button type="submit" class="ui circular teal button">Atualizar!</button>
+                </form>
+            </div>
+            <hr>
+            <div class="eight wide column">
+                <form action="/cards/{{card.id}}/delete" method="POST">
+                    <button type="submit" class="ui circular red button">Deletar!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endblock %}

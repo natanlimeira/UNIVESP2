@@ -44,10 +44,10 @@ class User(UserMixin, db.Model):
 
 class Card(db.Model):
    id = db.Column(db.Integer, primary_key = True) #id_vocabuloi
-   category = db.Column(db.String(100))
+   category = db.Column(db.String(100), default=0)
    topic = db.Column(db.String(100)) #genero
    question = db.Column(db.String(100000)) #voc_descricao
-   timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+   timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
    plural = db.Column(db.String(100000)) #plural
    answer = db.Column(db.String(100000)) #traducao
    user_id = db.Column(db.Integer, db.ForeignKey('user.id')) #id_aluno
@@ -65,8 +65,8 @@ class Book(db.Model):
    chapter = db.Column(db.Integer()) #capítulo
    id_level = db.Column(db.Integer, db.ForeignKey('level.id_level')) #id_nivel
 
-   def __init__(self, id_book, head, chapter, id_level):
-       self.id_book = id_book
+   def __init__(self, head, chapter, id_level):
+    #    self.id_book = id_book
        self.head = head
        self.chapter = chapter
        self.id_level = id_level
