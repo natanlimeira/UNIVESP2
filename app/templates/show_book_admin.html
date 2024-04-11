@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+    {% block content %}
+
+    <div class="ui segment">
+        <div class="row">
+            <div class="eight wide column">
+                <form action="/books_admin/{{book.id_book}}" method="POST" class="ui form">
+                    <div class="field">
+                        <label for="head">Descrição</label>
+                        <textarea name="head" id="" cols="1" rows="1">{{ book.head }}</textarea>
+                    </div>
+                    <div class="field">
+                        <label for="chapter">Capítulo</label>
+                        <textarea name="chapter" id="" cols="1" rows="1">{{ book.chapter }}</textarea>
+                    </div>
+                    <div class="field">
+                        <label for="id_level">Nível</label>
+                        <textarea name="id_level" id="" cols="30" rows="1">{{ book.id_level }}</textarea>
+                    </div>
+                    <button type="submit" class="ui circular teal button">Atualizar!</button>
+                </form>
+            </div>
+            <hr>
+            <div class="eight wide column">
+                <form action="/books_admin/{{book.id_book}}/delete" method="POST">
+                    <button type="submit" class="ui circular red button">Deletar!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endblock %}

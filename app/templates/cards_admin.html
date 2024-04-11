@@ -8,7 +8,47 @@
         <div class="ui stackable grid">
             <div class="sixteen wide column">
                 <a class="ui left floated green button" href="/admin">← Voltar</a>
-            </div>
+            <!-- <div class="ui labeled icon top right pointing dropdown right floated big teal button">
+                    <i class="filter icon"></i>
+                    <span class="text">Filter Cards</span>
+                    <div class="scrollable menu">
+                        <div class="ui search icon input">
+                        <i class="search icon"></i>
+                        <input type="text" name="search" placeholder="Search cards...">
+                        </div>
+                        <div class="divider"></div>
+                        <div class="header">
+                        <i class="tags icon"></i>
+                        Filter by category
+                        </div>
+                        <a class="item" href="/cards/category/general">
+                        <div class="ui blue empty circular label"></div>
+                        General
+                        </a>
+                        <a class="item" href="/cards/category/code">
+                        <div class="ui yellow empty circular label"></div>
+                        Code
+                        </a>
+                        <a class="item" href="/cards">
+                        <div class="ui green empty circular label"></div>
+                        All
+                        </a>
+                        <div class="divider"></div>
+                        <div class="header">
+                        <i class="code icon"></i>
+                        Filter by topic
+                        </div>
+                        {% set seq = ['blue', 'red', 'green', 'yellow', 'black', 'olive', 'violet', 'orange', 'purple', 'pink', 'brown'] %} 
+                        {% for card in all_topics%}
+                        <a class="item" href="/cards/topic/{{ card }}">
+                        <i class="{{ seq | random }} circle icon"></i>
+                        {{ card }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div> -->
+        </div>
             {% for card in cards %}
             <div class="four wide column" >
             <div class="ui fluid card">

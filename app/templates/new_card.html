@@ -1,6 +1,6 @@
 {% extends "base.html" %}
     {% block content %}
-    <div class="ui main container">
+    <div class="ui segment">
         <h1>Adicione uma nova carta!!</h1>
         <form action="/cards/new" method="POST" class="ui form">
             <div class="field">
@@ -34,7 +34,7 @@
                 </div>
             </div> -->
             <button type="submit" class="ui circular teal button">Submit!</button>
-            <button type="button" id="cancel-button" href="/" class="ui circular gray button">Cancelar</button>
+            <button id="cancel-button" href="/admin" class="ui circular gray button">Cancelar</button>
         </form>
     </div>
     {% endblock %}

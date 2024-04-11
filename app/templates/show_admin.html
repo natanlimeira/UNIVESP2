@@ -4,7 +4,7 @@
     <div class="ui segment">
         <div class="row">
             <div class="eight wide column">
-                <form action="/cards/{{card.id}}" method="POST" class="ui form">
+                <form action="/cards_admin/{{card.id}}" method="POST" class="ui form">
                     <div class="field">
                         <label for="topic">Gênero</label>
                         <input type="text" name="topic" value="{{ card.topic }}"> 
@@ -26,7 +26,7 @@
             </div>
             <hr>
             <div class="eight wide column">
-                <form action="/cards/{{card.id}}/delete" method="POST">
+                <form action="/cards_admin/{{card.id}}/delete" method="POST">
                     <button type="submit" class="ui circular red button">Deletar!</button>
                 </form>
             </div>

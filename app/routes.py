@@ -138,6 +138,13 @@ def show_cards_admin():
     cards = sorted(all_cards, key=lambda card:card.topic)
     return render_template("cards_admin.html", cards=cards)
 
+# All books
+@app.route("/books_admin")
+def show_books_admin():
+    all_books = Book.query.all()
+    books = sorted(all_books, key=lambda book:book.id_book)
+    return render_template("books_admin.html", books=books)
+
 # ---------------------------------------------------------------
 '''
 Can refactor this.
@@ -171,6 +178,7 @@ def get_card(card_id):
     card = [c for c in u.posts.all() if c.id == card_id]
     return render_template("show.html", card=card[0])
 
+#Editar carta no menu cards_admin
 @app.route("/cards_admin/<int:card_id>")
 def get_card_admin(card_id):
     all_cards = Card.query.all()
@@ -178,9 +186,17 @@ def get_card_admin(card_id):
     card = [c for c in cards if c.id == card_id]
     return render_template("show_admin.html", card=card[0])
 
+#Editar livro no menu books_admin
+@app.route("/books_admin/<int:id_book>")
+def get_book_admin(id_book):
+    all_books = Book.query.all()
+    books = sorted(all_books, key=lambda book:book.id_book)
+    book = [c for c in books if c.id_book == id_book]
+    return render_template("show_book_admin.html", book=book[0])
+
 # Update card.
-@app.route("/cards/<int:card_id>", methods=["POST"])
-def edit(card_id):
+@app.route("/cards_admin/<int:card_id>", methods=["POST"])
+def edit_card(card_id):
     # TODO
         # Only show cards respective to user.
     card = Card.query.get(card_id)
@@ -192,10 +208,29 @@ def edit(card_id):
     db.session.commit()
     return redirect("/cards_admin")
 
-@app.route("/cards/<int:card_id>/delete", methods=["POST"])
+# Update book.
+@app.route("/books_admin/<int:id_book>", methods=["POST"])
+def edit_book(id_book):
+    # TODO
+        # Only show cards respective to user.
+    book = Book.query.get(id_book)
+    book.head = request.form["head"]
+    book.chapter = request.form["chapter"]
+    book.id_level = request.form["id_level"]
+    
+    db.session.commit()
+    return redirect("/books_admin")
+
+@app.route("/cards_admin/<int:card_id>/delete", methods=["POST"])
 def delete_card(card_id):
     # TODO
         # Only show cards respective to user.
     Card.query.filter_by(id=card_id).delete()
     db.session.commit()
     return redirect("/cards_admin")
+
+@app.route("/books_admin/<int:id_book>/delete", methods=["POST"])
+def delete_book(id_book):
+    Book.query.filter_by(id_book=id_book).delete()
+    db.session.commit()
+    return redirect("/books_admin")
