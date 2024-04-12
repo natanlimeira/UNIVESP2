@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+    {% block content %}
+
+    <div class="ui segment">
+        <div class="row">
+            <div class="eight wide column">
+                <form action="/level_admin/{{level.id_level}}" method="POST" class="ui form">
+                    <div class="field">
+                        <label for="description">Descrição</label>
+                        <textarea name="description" id="" cols="1" rows="1">{{ level.description }}</textarea>
+                    </div>
+                    <button type="submit" class="ui circular teal button">Atualizar!</button>
+                </form>
+            </div>
+            <hr>
+            <div class="eight wide column">
+                <form action="/level_admin/{{level.id_level}}/delete" method="POST">
+                    <button type="submit" class="ui circular red button">Deletar!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endblock %}

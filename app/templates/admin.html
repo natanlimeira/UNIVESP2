@@ -27,8 +27,8 @@
             <div class="row">
                 <div class="eight wide column">
                     <div class="ui tall stacked segment">
-                        <a class="ui black ribbon label">Livros</a>
-                        <div class="ui green right corner label"
+                        <a class="ui yellow ribbon label">Livros</a>
+                        <div class="ui yellow right corner label"
                         data-content="Adicionar novo livro!"
                         data-position="right center">
                             <a href="/book/new"><i class="add icon" style="cursor: pointer;"></i></a> 
@@ -48,15 +48,30 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="eight wide column">
+                    <div class="ui tall stacked segment">
+                        <a class="ui red ribbon label">Níveis</a>
+                        <div class="ui red right corner label"
+                        data-content="Adicionar novo nível!"
+                        data-position="right center">
+                            <a href="/level/new"><i class="add icon" style="cursor: pointer;"></i></a> 
+                        </div>
+                        <h1 class="ui header ellipsis topic">Adicione um nível => </h1>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
-                {% if card%}
                 <div class="sixteen wide column">
+                    {% if card%}
                     <a class="ui left floated big green button" href="/cards_admin">Editar Cartas!</a>
+                    {% endif %}
+                    {% if book%}
                     <a class="ui left floated big yellow button" href="/books_admin">Editar Livros!</a>
+                    {% endif %}
                     <a class="ui left floated big red button" href="/level_admin">Editar Níveis!</a>
                 </div>
-                {% endif %}
             </div>
         </div>
     </div> 

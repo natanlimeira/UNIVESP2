@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+    {% block content %}
+    <div class="ui main container">
+        <h1>Adicione um novo nível!!</h1>
+        <form action="/level/new" method="POST" class="ui form">
+            <div class="field">
+                <label for="description">Descrição</label>
+                <textarea name="description" id="" cols="5" rows="1"></textarea>
+            </div>
+            <button type="submit" class="ui circular teal button">Enviar!</button>
+            <button id="cancel-button" href="/admin" class="ui circular gray button">Cancelar</button>
+        </form>
+    </div>
+    {% endblock %}

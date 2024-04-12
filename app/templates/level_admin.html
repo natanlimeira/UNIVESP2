@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block head %}
+    {{super()}}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/codestyles.css') }}">
+{% endblock %}
+{% block content %}
+    <div class="ui segment">
+        <div class="ui stackable grid">
+            <div class="sixteen wide column">
+                <a class="ui left floated green button" href="/admin">← Voltar</a>
+        </div>
+            {% for level in levels %}
+            <div class="four wide column" >
+            <div class="ui fluid card">
+                    <div class="content">
+                        <div class="topic ellipsis header">
+                           ID: {{level.id_level}}
+                        </div>
+                        <div class="question ellipsis meta">
+                           Descrição: {{level.description}}
+                        </div>
+                    </div>
+                    <div class="extra content" onmouseover="showDescription(this)" onmouseout="showDescription(this)">
+                        <div class="sixteen wide column">
+                            <a class="ui right floated green button toggle" href="/level_admin/{{ level.id_level }}">Editar o nível!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

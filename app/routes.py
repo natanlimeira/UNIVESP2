@@ -72,16 +72,16 @@ def admin():
     cards = Card.query.all()
     books = Book.query.all()
     random_card = random.choice(cards)
+    random_book = random.choice(books)
     total_cards = len(cards)
     all_books_len = len(books)
-    # all_books = sorted(books)
     # except:
     #     random_card = None
     #     total_cards = 0
     #     all_books_len = 0
     #     all_books = 0
 
-    return render_template("admin.html", card=random_card, total_cards=total_cards, all_books_len=all_books_len)#, all_books=all_books)
+    return render_template("admin.html", card=random_card, book=random_book, total_cards=total_cards, all_books_len=all_books_len)
 
 
 @app.route("/cards/new", methods=["GET", "POST"])
@@ -112,14 +112,27 @@ def new_book():
     if request.method == "GET":
         all_books = Book.query.all()
         return render_template("new_book.html", all_books=all_books)
-    else:
-        # id_book = request.form["id_book"]      
+    else:     
         head = request.form["head"]
         chapter = request.form["chapter"]
         id_level = request.form["id_level"]
 
         book = Book(head, chapter,id_level)
         db.session.add(book)
+        db.session.commit()
+
+        return redirect("/admin")
+    
+@app.route("/level/new", methods=["GET", "POST"])
+def new_level():
+    if request.method == "GET":
+        all_levels = Level.query.all()
+        return render_template("new_level.html", all_levels=all_levels)
+    else:     
+        description = request.form["description"]
+
+        level = Level(description)
+        db.session.add(level)
         db.session.commit()
 
         return redirect("/admin")
@@ -144,6 +157,13 @@ def show_books_admin():
     all_books = Book.query.all()
     books = sorted(all_books, key=lambda book:book.id_book)
     return render_template("books_admin.html", books=books)
+
+# All levels
+@app.route("/level_admin")
+def show_level_admin():
+    all_levels = Level.query.all()
+    levels = sorted(all_levels, key=lambda level:level.id_level)
+    return render_template("level_admin.html", levels=levels)
 
 # ---------------------------------------------------------------
 '''
@@ -194,6 +214,14 @@ def get_book_admin(id_book):
     book = [c for c in books if c.id_book == id_book]
     return render_template("show_book_admin.html", book=book[0])
 
+#Editar um nível no menu level_admin
+@app.route("/level_admin/<int:id_level>")
+def get_level_admin(id_level):
+    all_level = Level.query.all()
+    levels = sorted(all_level, key=lambda level:level.id_level)
+    level = [c for c in levels if c.id_level == id_level]
+    return render_template("show_level_admin.html", level=level[0])
+
 # Update card.
 @app.route("/cards_admin/<int:card_id>", methods=["POST"])
 def edit_card(card_id):
@@ -221,6 +249,16 @@ def edit_book(id_book):
     db.session.commit()
     return redirect("/books_admin")
 
+# Update level.
+@app.route("/level_admin/<int:id_level>", methods=["POST"])
+def edit_level(id_level):
+    # TODO
+        # Only show cards respective to user.
+    level = Level.query.get(id_level)
+    level.description = request.form["description"]
+    db.session.commit()
+    return redirect("/level_admin")
+
 @app.route("/cards_admin/<int:card_id>/delete", methods=["POST"])
 def delete_card(card_id):
     # TODO
@@ -234,3 +272,9 @@ def delete_book(id_book):
     Book.query.filter_by(id_book=id_book).delete()
     db.session.commit()
     return redirect("/books_admin")
+
+@app.route("/level_admin/<int:id_level>/delete", methods=["POST"])
+def delete_level(id_level):
+    Level.query.filter_by(id_level=id_level).delete()
+    db.session.commit()
+    return redirect("/level_admin")
