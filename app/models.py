@@ -10,8 +10,8 @@ class User(UserMixin, db.Model):
     phone = db.Column(db.String(64), index=True)
     password_hash = db.Column(db.String(128))
     admin = db.Column(db.Integer)
-    id_level = db.Column(db.Integer, db.ForeignKey('level.id_level')) #id_nivel
-    id_book = db.Column(db.Integer, db.ForeignKey('book.id_book')) #id_livro
+    id_level = db.Column(db.Integer, db.ForeignKey('level.id_level'), default=1) #id_nivel
+    id_book = db.Column(db.Integer, db.ForeignKey('book.id_book'),default=1) #id_livro
 
     # posts = db.relationship('Card', backref='author', lazy='dynamic')
     # posts_book = db.relationship('Book', backref='booker')
