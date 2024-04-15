@@ -9,58 +9,36 @@
             <div class="sixteen wide column">
                 <a class="ui left floated green button" href="/admin">← Voltar</a>
         </div>
-            {% for card in cards %}
+            {% for user in users %}
             <div class="four wide column" >
             <div class="ui fluid card">
                     <div class="content">
                         <div class="topic ellipsis header">
-                           Questão: {{card.question}}
+                           Nome: {{user.username}}
                         </div>
                         <div class="question ellipsis meta">
-                           Tópico: {{card.topic}}
+                           Email: {{user.email}}
                         </div>
                         <div class="question ellipsis meta">
-                            Plural: {{card.plural}}
+                            Telefone: {{user.phone}}
                          </div>
                         <div class="question ellipsis meta">
-                            Resposta: {{card.answer}}
+                            Nível: {{user.id_level}}
                          </div>
                          <div class="question ellipsis meta">
-                            Livro: {{card.id_book}}
-                         </div>
-                         <div class="question ellipsis meta">
-                            Capítulo: {{card.chapter}}
+                            Livro: {{user.id_book}}
                          </div>
                         <div class="description">
                         </div>
                     </div>
                     <div class="extra content" onmouseover="showDescription(this)" onmouseout="showDescription(this)">
                         <div class="sixteen wide column">
-                            <div class="ui left floated yellow button toggle" onclick="showModal(this)">Ver a carta!</div>
-                            <a class="ui right floated green button toggle" href="/cards_admin/{{ card.id }}">Editar a carta!</a>
+                            <a class="ui right floated green button toggle" href="/user_admin/{{ user.id }}">Editar aluno!</a>
                         </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
-        </div>
-    </div>
-    <div class="ui long modal">
-        <i class="close icon"></i>
-        <div class="modaltitle header">
-            Teste
-        </div>
-        <div class="modalcontent content"> 
-            <!-- Question/Code goes here! -->
-        </div>
-        <div class="actions">
-            <div class="ui red deny button">
-            Revisar!
-            </div>
-            <div class="ui positive right labeled icon button">
-            Já sei!
-            <i class="checkmark icon"></i>
-            </div>
         </div>
     </div>
 {% endblock %}

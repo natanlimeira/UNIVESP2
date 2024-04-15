@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+    {% block content %}
+
+    <div class="ui segment">
+        <div class="row">
+            <div class="eight wide column">
+                <form action="/user_admin/{{user.id}}" method="POST" class="ui form">
+                    <div class="field">
+                        <label for="username">Nome</label>
+                        <textarea name="username" id="" cols="1" rows="1">{{ user.username }}</textarea>
+                    </div>
+                    <div class="field">
+                        <label for="email">Email</label>
+                        <textarea name="email" id="" cols="1" rows="1">{{ user.email }}</textarea>
+                    </div>
+                    <div class="field">
+                        <label for="phone">Telefone</label>
+                        <textarea name="phone" id="" cols="30" rows="1">{{ user.phone }}</textarea>
+                    </div>
+                    <div class="field">
+                        <label for="id_level">Nível</label>
+                        <textarea name="id_level" id="" cols="30" rows="1">{{ user.id_level }}</textarea>
+                    </div>
+                    <div class="field">
+                        <label for="id_book">Livro</label>
+                        <textarea name="id_book" id="" cols="30" rows="1">{{ user.id_book }}</textarea>
+                    </div>
+                    <button type="submit" class="ui circular teal button">Atualizar!</button>
+                </form>
+            </div>
+            <hr>
+            <div class="eight wide column">
+                <form action="/user_admin/{{user.id}}/delete" method="POST">
+                    <button type="submit" class="ui circular red button">Deletar!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endblock %}

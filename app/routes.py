@@ -15,7 +15,7 @@ def register():
         return redirect("/")
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data, admin=form.admin.data)
+        user = User(username=form.username.data, email=form.email.data, admin=form.admin.data, phone=form.phone.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -68,18 +68,18 @@ def index():
 @app.route("/admin")
 @login_required
 def admin():
-    # try:
-    cards = Card.query.all()
-    books = Book.query.all()
-    random_card = random.choice(cards)
-    random_book = random.choice(books)
-    total_cards = len(cards)
-    all_books_len = len(books)
-    # except:
-    #     random_card = None
-    #     total_cards = 0
-    #     all_books_len = 0
-    #     all_books = 0
+    try:
+        cards = Card.query.all()
+        books = Book.query.all()
+        random_card = random.choice(cards)
+        random_book = random.choice(books)
+        total_cards = len(cards)
+        all_books_len = len(books)
+    except:
+        random_card = None
+        total_cards = 0
+        all_books_len = 0
+        random_book = 0
 
     return render_template("admin.html", card=random_card, book=random_book, total_cards=total_cards, all_books_len=all_books_len)
 
@@ -96,12 +96,10 @@ def new_card():
         question = request.form["question"]
         plural = request.form["plural"]
         answer = request.form["answer"]
+        book_id = request.form["book_id"]
+        chapter = request.form["chapter"]
 
-        # if category == 'code':
-        #     #using pygments to store code as html elements for highlighting.
-        #     question = highlight(question, PythonLexer(), HtmlFormatter())
-
-        card = Card(topic, question, plural, answer)
+        card = Card(topic, question, plural, answer,book_id, chapter)
         db.session.add(card)
         db.session.commit()
 
@@ -165,6 +163,13 @@ def show_level_admin():
     levels = sorted(all_levels, key=lambda level:level.id_level)
     return render_template("level_admin.html", levels=levels)
 
+# All user
+@app.route("/user_admin")
+def show_user_admin():
+    all_users = User.query.all()
+    users = sorted(all_users, key=lambda user:user.id)
+    return render_template("user_admin.html", users=users)
+
 # ---------------------------------------------------------------
 '''
 Can refactor this.
@@ -222,6 +227,14 @@ def get_level_admin(id_level):
     level = [c for c in levels if c.id_level == id_level]
     return render_template("show_level_admin.html", level=level[0])
 
+#Editar um usuário no menu user_admin
+@app.route("/user_admin/<int:id>")
+def get_user_admin(id):
+    all_users = User.query.all()
+    users = sorted(all_users, key=lambda user:user.id)
+    user = [c for c in users if c.id == id]
+    return render_template("show_user_admin.html", user=user[0])
+
 # Update card.
 @app.route("/cards_admin/<int:card_id>", methods=["POST"])
 def edit_card(card_id):
@@ -259,6 +272,18 @@ def edit_level(id_level):
     db.session.commit()
     return redirect("/level_admin")
 
+# Update user.
+@app.route("/user_admin/<int:id>", methods=["POST"])
+def edit_user(id):
+    user = User.query.get(id)
+    user.username = request.form["username"]
+    user.email = request.form["email"]
+    user.phone = request.form["phone"]
+    user.id_level = str(request.form["id_level"])
+    user.id_book = str(request.form["id_book"])
+    db.session.commit()
+    return redirect("/user_admin")
+
 @app.route("/cards_admin/<int:card_id>/delete", methods=["POST"])
 def delete_card(card_id):
     # TODO
@@ -278,3 +303,9 @@ def delete_level(id_level):
     Level.query.filter_by(id_level=id_level).delete()
     db.session.commit()
     return redirect("/level_admin")
+
+@app.route("/user_admin/<int:id>/delete", methods=["POST"])
+def delete_user(id):
+    User.query.filter_by(id=id).delete()
+    db.session.commit()
+    return redirect("/user_admin")

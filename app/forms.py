@@ -13,6 +13,7 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    phone = StringField('Phone', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
@@ -27,9 +28,15 @@ class RegistrationForm(FlaskForm):
     def validate_admin(self, admin):
         user = User.query.filter_by(admin=admin.data).first()
         if user is not None:
-            raise ValidationError('Já há um administrador do sistema')
+            if user.admin == 2:
+                raise ValidationError('Já há um administrador do sistema')
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
-            raise ValidationError('Please use a different email address.')
+            raise ValidationError('O email já está em uso')
+        
+    def validate_email(self, phone):
+        user = User.query.filter_by(phone=phone.data).first()
+        if user is not None:
+            raise ValidationError('O telefone já está em uso')

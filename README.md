@@ -33,8 +33,8 @@ online flash cards for studying.
 
 ## Contributing
 
-1. :spaghetti: Fork this repo!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -m 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :+1:
+1. Fork esse repositório! `git clone https://github.com/natanlimeira/UNIVESP2.git`
+2. Criar um feature branch: `git checkout -b my-new-feature`
+3. Realizar Commit das mudanças: `git commit -m 'Add some feature'`
+4. Realizar push no branch: `git push origin my-new-feature`
+5. Submeter o pull request :+1:

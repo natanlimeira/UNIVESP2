@@ -3,7 +3,7 @@
 {% block content %}
 <div class="ui container">
     <div class="ui segment">
-        <h1 class="ui center aligned header">Register</h1>
+        <h1 class="ui center aligned header">Registrar</h1>
         <form action="" method="post" class="ui form">
             {{ form.hidden_tag() }}
             <div class="ui field">
@@ -24,6 +24,13 @@
                 <label for="">{{ form.email.label }}</label>
                 {{ form.email(size=64) }}<br>
                 {% for error in form.email.errors %}
+                <div class="ui red message">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="ui field">
+                <label for="">{{ form.phone.label }}</label>
+                {{ form.phone(size=64) }}<br>
+                {% for error in form.phone.errors %}
                 <div class="ui red message">{{ error }}</div>
                 {% endfor %}
             </div>
