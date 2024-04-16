@@ -80,7 +80,7 @@ def index():
 
 @app.route("/<int:u_id><int:card_id>/somar", methods=["POST"])
 def somar_conection(u_id,card_id):
-    connection = Conection.query.filter_by(id=u_id,id_card=card_id).first()
+    connection = Conection.query.filter_by(id_student=u_id,id_card=card_id).first()
     if connection is not None:
         id_connection = connection.get_id()
         id = Conection.query.get(id_connection)
