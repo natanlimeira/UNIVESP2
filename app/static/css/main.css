@@ -43,6 +43,6 @@
     transition: opacity 0.3s ease-in-out;
   }
   
-  .ui.main.container:hover .hidden-answer {
+.hidden-answer:hover {
     opacity: 1;
   }

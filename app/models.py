@@ -28,6 +28,12 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
     
+    def get_id(self):
+        return self.id
+
+    def get_username(self):
+        return self.username
+
     def get_admin(self):
         return self.admin
     
@@ -44,17 +50,17 @@ class User(UserMixin, db.Model):
         self.id_book = book
 
 class Card(db.Model):
-   id = db.Column(db.Integer, primary_key = True) #id_vocabuloi
-   category = db.Column(db.String(100), default=0)
-   topic = db.Column(db.String(100)) #genero
-   question = db.Column(db.String(100000)) #voc_descricao
-   timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
-   plural = db.Column(db.String(100000)) #plural
-   answer = db.Column(db.String(100000)) #traducao
-   book_id = db.Column(db.Integer, db.ForeignKey('book.id_book')) #id_livro
-   chapter = db.Column(db.Integer, db.ForeignKey('book.chapter')) #capitulo
+    id = db.Column(db.Integer, primary_key = True) #id_vocabuloi
+    category = db.Column(db.String(100), default=0)
+    topic = db.Column(db.String(100)) #genero
+    question = db.Column(db.String(100000)) #voc_descricao
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
+    plural = db.Column(db.String(100000)) #plural
+    answer = db.Column(db.String(100000)) #traducao
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id_book')) #id_livro
+    chapter = db.Column(db.Integer, db.ForeignKey('book.chapter')) #capitulo
    
-   def __init__(self, topic, question, plural, answer,book_id, chapter):
+    def __init__(self, topic, question, plural, answer,book_id, chapter):
        self.topic = topic
        self.question = question
        self.answer = answer
@@ -62,6 +68,9 @@ class Card(db.Model):
        self.book_id = book_id
        self.chapter = chapter
 
+    def get_id(self):
+        return self.id
+   
 class Book(db.Model):
    id_book = db.Column(db.Integer, primary_key = True) #id_livro
    head = db.Column(db.String(1000)) #Título
@@ -86,11 +95,13 @@ class Conection(db.Model):
     id_card = db.Column(db.Integer, db.ForeignKey('card.id')) #id_card
     n_answer = db.Column(db.Integer()) #Número de respostas corretas
 
-    def __init__(self, id_student,id_card,n_answer):
+    def __init__(self, id_student,id_card,n_answer=0):
        self.id_student = id_student
        self.id_card = id_card
        self.n_answer = n_answer
 
+    def get_id(self):
+        return self.id
 
 @login.user_loader
 def load_user(id):

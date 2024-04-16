@@ -6,13 +6,14 @@ from pygments import highlight
 from pygments.lexers import PythonLexer
 from pygments.formatters import HtmlFormatter
 from app import app, db
-from app.models import Card, User, Book, Level
+from app.models import Card, User, Book, Level, Conection
 from app.forms import LoginForm, RegistrationForm
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect("/")
+        return redirect("/login")
+    
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data, admin=form.admin.data, phone=form.phone.data)
@@ -26,15 +27,21 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect("/")
+        user_id = current_user.id
+        user = User.query.filter_by(id=user_id).first()
+        admin = user.get_admin()
+        if admin == 2:
+            return redirect("/admin")
+        else:
+            return redirect("/")
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Nome ou senha incorreta','Erro de login')
             return redirect("/login")
-        admin = user.get_admin()
         login_user(user, remember=form.remember_me.data)
+        admin = user.get_admin()
         if admin == 2:
             return redirect("/admin")
         else:
@@ -50,20 +57,40 @@ def logout():
 @login_required
 def index():
     try:
-        u = User.query.get(current_user.id)
-        cards = u.posts.all()
-        books = set(list(t.topic for t in cards))
-        random_card = random.choice(cards)
+        user_id = current_user.id
+        user = User.query.filter_by(id=user_id).first()
+        u_id = user.get_id()
+        u_name = user.get_username()
+        u_book = user.get_book()        
+        cards = Card.query.filter_by(book_id=u_book).all()
+        books = Book.query.all()
+        card = random.choice(cards)
+        card_id = card.get_id()
         total_cards = len(cards)
         all_books_len = len(books)
-        all_books = sorted(books)
     except:
         random_card = None
         total_cards = 0
         all_books_len = 0
-        all_books = 0
 
-    return render_template("index.html", card=random_card, total_cards=total_cards, all_books_len=all_books_len, all_books=all_books)
+    return render_template("index.html",u_id=u_id,\
+                           u_name=u_name, u_book=u_book,\
+                            card=card,total_cards=total_cards, \
+                                all_books_len=all_books_len, card_id=card_id)
+
+@app.route("/<int:u_id><int:card_id>/somar", methods=["POST"])
+def somar_conection(u_id,card_id):
+    connection = Conection.query.filter_by(id=u_id,id_card=card_id).first()
+    if connection is not None:
+        id_connection = connection.get_id()
+        id = Conection.query.get(id_connection)
+        id.n_answer += 1
+    else:
+        connection = Conection(u_id,card_id,1)
+        db.session.add(connection)
+        db.session.commit()
+    db.session.commit()
+    return redirect("/")
 
 @app.route("/admin")
 @login_required
@@ -128,7 +155,6 @@ def new_level():
         return render_template("new_level.html", all_levels=all_levels)
     else:     
         description = request.form["description"]
-
         level = Level(description)
         db.session.add(level)
         db.session.commit()
