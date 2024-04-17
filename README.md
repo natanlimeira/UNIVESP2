@@ -1,6 +1,6 @@
-# Flash Cards - Projeto Integrador UNIVESP! :happy:
+# Flash Cards - Projeto Integrador UNIVESP! :rocket:
 * Essa é uma aplicação web utilizando flask com o uso de banco de dados e controle de versão para o ensino de idiomas por meio de flash cards 
-* Feita para o uso educacional :hangloose:
+* Feita para o uso educacional :pencil2:
 
 ## O que o programa faz:
 * Criação do administrador (professor)
@@ -23,7 +23,7 @@
 ## Add-ons futuros:
 * API para novas palavras
 * Alunos poderem mudar de livro
-* Professor adicionar mais palavras
+* Professor adicionar grupos de palavras
 
 ## Como contribuir:
 1. Fork desse repositório! `git clone https://github.com/natanlimeira/UNIVESP2.git`
