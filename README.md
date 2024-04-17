@@ -1,22 +1,16 @@
-# Flas(k) Cards - Web application! :books:
-* This is a web application for storing a collection of
-online flash cards for studying.
-* Use as you wish! You're the hacker :thumbsup:
-* **The app is currently geared towards my pursuit for a fulfilling Software Engineer position, but can certainly be modified for other areas of study** 
+# Flash Cards - Projeto Integrador UNIVESP! :happy:
+* Essa é uma aplicação web utilizando flask com o uso de banco de dados e controle de versão para o ensino de idiomas por meio de flash cards 
+* Feita para o uso educacional :hangloose:
 
-## Demo:
-![How to Use](/FlaskCards.gif)
+## O que o programa faz:
+* Criação do administrador (professor)
+* Criação de alunos
+* Possibilidade de criar cartas e inseri-las nos livros
+* Possibilidade do professor gerenciar os alunos
+* Alunos podem dizer se sabem ou não sabem o que a carta significa
+* Alunos podem resetar as cartas de um livro para vê-las novamente
 
-## Live:
-* See live on -> [Heroku](https://flask-cards-soft-eng.herokuapp.com/)
-
-## Features:
-* Python syntax highlighting using [Pygments](http://pygments.org/)
-* Random Card upon refreshing the app on index.html 
-* Querying based on pre defined category. (General vs Code)
-* Querying based on topics.
-
-## Usage:
+## Como usar:
 * `git clone https://github.com/natanlimeira/UNIVESP2.git`
 * `cd UNIVESP2`
 * `pip install -r requirements.txt`
@@ -26,14 +20,13 @@ online flash cards for studying.
 * `flask db upgrade`
 * `flask run`
 
-## Future Add-ons:
-* Ability to divide into multiple study sessions.
-* Ajax calls.
-* ~~AuthO~~ -> _Done!_
+## Add-ons futuros:
+* API para novas palavras
+* Alunos poderem mudar de livro
+* Professor adicionar mais palavras
 
-## Contributing
-
-1. Fork esse repositório! `git clone https://github.com/natanlimeira/UNIVESP2.git`
+## Como contribuir:
+1. Fork desse repositório! `git clone https://github.com/natanlimeira/UNIVESP2.git`
 2. Criar um feature branch: `git checkout -b my-new-feature`
 3. Realizar Commit das mudanças: `git commit -m 'Add some feature'`
 4. Realizar push no branch: `git push origin my-new-feature`
