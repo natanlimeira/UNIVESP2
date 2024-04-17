@@ -8,6 +8,8 @@ from pygments.formatters import HtmlFormatter
 from app import app, db
 from app.models import Card, User, Book, Level, Conection
 from app.forms import LoginForm, RegistrationForm
+from sqlalchemy import and_
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -59,24 +61,18 @@ def index():
     try:
         user_id = current_user.id
         user = User.query.filter_by(id=user_id).first()
-        u_id = user.get_id()
-        u_name = user.get_username()
-        u_book = user.get_book()        
-        cards = Card.query.filter_by(book_id=u_book).all()
-        books = Book.query.all()
+        book = Book.query.filter_by(id_book=user.id_book).first()
+        connections = Conection.query.filter_by(id_student=user.id).filter(Conection.n_answer<4).all()
+        connections_id = [connection.id_card for connection in connections]
+        cards = Card.query.filter_by(book_id=user.id_book).filter(Card.id.in_(connections_id)).all()
         card = random.choice(cards)
-        card_id = card.get_id()
         total_cards = len(cards)
-        all_books_len = len(books)
     except:
-        random_card = None
         total_cards = 0
-        all_books_len = 0
+        card = None
 
-    return render_template("index.html",u_id=u_id,\
-                           u_name=u_name, u_book=u_book,\
-                            card=card,total_cards=total_cards, \
-                                all_books_len=all_books_len, card_id=card_id)
+    return render_template("index.html",user=user, book=book,\
+                            card=card,total_cards=total_cards)
 
 @app.route("/<int:u_id><int:card_id>/somar", methods=["POST"])
 def somar_conection(u_id,card_id):
@@ -88,7 +84,30 @@ def somar_conection(u_id,card_id):
     else:
         connection = Conection(u_id,card_id,1)
         db.session.add(connection)
-        db.session.commit()
+    db.session.commit()
+    return redirect("/")
+
+@app.route("/<int:u_id><int:card_id>/subtrair", methods=["POST"])
+def subtrair_conection(u_id,card_id):
+    connection = Conection.query.filter_by(id_student=u_id,id_card=card_id).first()
+    if connection is not None:
+        id_connection = connection.get_id()
+        id = Conection.query.get(id_connection)
+        id.n_answer = 0
+    else:
+        connection = Conection(u_id,card_id,0)
+        db.session.add(connection)
+    db.session.commit()
+    return redirect("/")
+
+@app.route("/<int:u_id>/resetar", methods=["POST"])
+def resetar_conection(u_id):
+    connection = Conection.query.filter_by(id_student=u_id).all()
+    if connection is not None:
+        for c in connection:
+            c.n_answer = 0
+    else:
+        pass
     db.session.commit()
     return redirect("/")
 

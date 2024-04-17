@@ -2,9 +2,9 @@
     {% block content %}    
     <div class="ui container">
         <div class="ui stackable grid">
-            <h1>Olá, {{ u_name }}</h1>
-            <h1>O ID da carta é: {{card_id}}</h1>
-            <h1>O id do usuário é: {{u_id}}</h1>
+            <h1>Olá, {{ user.username }}</h1>
+            <!-- <h1>O ID da carta é: {{card.id}}</h1>
+            <h1>O id do usuário é: {{ user.id}}</h1> -->
             <div class="row">
                 <div class="sixteen column wide center aligned">
                     <div class="ui two statistics">
@@ -13,12 +13,12 @@
                                 Você está no livro:
                             </div>
                             <div class="value">
-                            {{ u_book }}
+                            {{ user.id_book }}
                             </div>
                         </div>  
                         <div class="statistic animated zoomIn">
                             <div class="label">
-                                Cartas nesse livro:
+                                Cartas restantes no livro:
                                 </div>
                             <div class="value">
                                 {{ total_cards }}
@@ -30,11 +30,11 @@
             <div class="row">
                 <div class="eight wide column">
                     <div class="ui tall stacked segment">
-                        <a class="ui black ribbon label">Tópico</a>
-                        {% if card %}
-                        <h1 class="ui header ellipsis topic">{{ card.topic }}</h1>
+                        <a class="ui black ribbon label">Livro</a>
+                        {% if book %}
+                        <h1 class="ui header ellipsis topic">{{ book.head }}</h1>
                         {% else %}
-                        <h1 class="ui header ellipsis topic">Não há mais cartas...</h1>
+                        <h1 class="ui header ellipsis topic">Você não tem um livro ainda...</h1>
                         {% endif %}
                     </div>
                 </div>
@@ -53,12 +53,15 @@
                 </div>
             </div>
             <div class="row">
-                {% if card%}
                 <div class="sixteen wide column">
-                    <form action="/{{u_id}}{{card_id}}/somar" method="POST">
+                    <form action="/{{user.id}}/resetar" method="POST">
+                        <button type="submit" class="ui right floated big yellow button">Resetar cartas!</button>
+                    </form>
+                    {% if card%}
+                    <form action="/{{user.id}}{{card.id}}/somar" method="POST">
                         <button type="submit" class="ui right floated big green button">Eu sei!</button>
                     </form>
-                    <form action="/{{u_id}}{{card_id}}/subtrair" method="POST">
+                    <form action="/{{user.id}}{{card.id}}/subtrair" method="POST">
                         <button type="submit" class="ui right floated big red button">Eu não sei!</button>
                     </form>
                         <!-- <div class="ui labeled icon top right pointing dropdown right floated big teal button">

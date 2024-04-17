@@ -13,9 +13,6 @@ class User(UserMixin, db.Model):
     id_level = db.Column(db.Integer, db.ForeignKey('level.id_level'), default=1) #id_nivel
     id_book = db.Column(db.Integer, db.ForeignKey('book.id_book'),default=1) #id_livro
 
-    # posts = db.relationship('Card', backref='author', lazy='dynamic')
-    # posts_book = db.relationship('Book', backref='booker')
-
     def __init__(self, username, email, admin, phone):
        self.username = username
        self.email = email
