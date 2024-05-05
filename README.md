@@ -20,6 +20,11 @@
 * `flask db upgrade`
 * `flask run`
 
+## Caso apenas o flask não funcione:
+* `python -m flask db init`
+* Continuar com os outros passos
+
+
 ## Add-ons futuros:
 * API para novas palavras
 * Alunos poderem mudar de livro

@@ -6,7 +6,7 @@ from pygments import highlight
 from pygments.lexers import PythonLexer
 from pygments.formatters import HtmlFormatter
 from app import app, db
-from app.models import Card, User, Book, Level, Conection
+from app.models import Card, User, Book, Conection, Level
 from app.forms import LoginForm, RegistrationForm
 from sqlalchemy import and_
 
@@ -61,18 +61,30 @@ def index():
     try:
         user_id = current_user.id
         user = User.query.filter_by(id=user_id).first()
+        u_id = user.id
         book = Book.query.filter_by(id_book=user.id_book).first()
-        connections = Conection.query.filter_by(id_student=user.id).filter(Conection.n_answer<4).all()
-        connections_id = [connection.id_card for connection in connections]
-        cards = Card.query.filter_by(book_id=user.id_book).filter(Card.id.in_(connections_id)).all()
-        card = random.choice(cards)
+        cards = Card.query.filter_by(book_id=user.id_book).all()
+        for card in cards:
+            card_id = card.id
+            connection = Conection.query.filter_by(id_student=u_id,id_card=card_id).first()
+            if connection is None:
+                connection = Conection(u_id,card_id,1)
+                db.session.add(connection)
+        db.session.commit()
+        connections = Conection.query.filter_by(id_student=user.id).filter(Conection.n_answer<4).order_by(Conection.n_answer).first()
+        # connections = Conection.query.filter_by(id_student=user.id).filter(Conection.n_answer<4).all()
+        # connections_id = [connection.id_card for connection in connections]
+        connections_id = connections.id_card
+        # cards = Card.query.filter_by(book_id=user.id_book).filter(Card.id.in_(connections_id)).all()
+        card = Card.query.filter_by(book_id=user.id_book,id=connections_id).first()
+        # card = random.choice(cards)
         total_cards = len(cards)
     except:
         total_cards = 0
         card = None
 
     return render_template("index.html",user=user, book=book,\
-                            card=card,total_cards=total_cards)
+                            card=card,total_cards=total_cards,connections=connections)
 
 @app.route("/<int:u_id><int:card_id>/somar", methods=["POST"])
 def somar_conection(u_id,card_id):
