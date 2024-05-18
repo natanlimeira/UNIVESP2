@@ -336,7 +336,6 @@ def edit_user(id):
     user.username = request.form["username"]
     user.email = request.form["email"]
     user.phone = request.form["phone"]
-    user.id_level = str(request.form["id_level"])
     user.id_book = str(request.form["id_book"])
     db.session.commit()
     return redirect("/user_admin")
